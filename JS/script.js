@@ -1,16 +1,18 @@
 fetch('https://rickandmortyapi.com/api/character')
 	.then(response => response.json())
 	.then(data => {
-		const characters = data.results;
-		const container = document.querySelector('main');
+		const characters = data.results
+		const container = document.querySelector('main')
 
-		function createCard (character){
+		function createCard(character) {
 
 			const cards = document.createElement('div')
 			cards.id = 'container'
 			cards.classList.add('card')
 
 			const imgCard = document.createElement('img')
+			imgCard.classList.add('imgCard')
+			imgCard.id = 'imgCard'
 			imgCard.src = character.image
 			imgCard.alt = character.name
 
@@ -26,7 +28,7 @@ fetch('https://rickandmortyapi.com/api/character')
 			const status_container = document.createElement('h3')
 			status_container.id = 'status_container'
 			status_container.classList.add('status')
-			status_container.textContent = `Status: ${character.status}`
+
 
 			const specie_container = document.createElement('h4')
 			specie_container.id = 'specie_container'
@@ -42,13 +44,44 @@ fetch('https://rickandmortyapi.com/api/character')
 
 			container.appendChild(cards)
 
+			switch (character.status) {
+				case 'Alive':
+					status_container.textContent = `🟢Status: ${character.status}`
+					break
+
+				case 'Dead':
+					status_container.textContent = `🔴Status: ${character.status}`
+
+					status_container.addEventListener('mouseenter', () => {
+						status_container.style.color = 'red'
+					})
+					
+					status_container.addEventListener('mouseleave', () => {
+						status_container.style.color = ''
+					})
+					break
+				default:
+					status_container.textContent = `🟡Status: ${character.status}`
+
+					status_container.addEventListener('mouseenter', () => {
+						status_container.style.color = 'yellow'
+					})
+					
+					status_container.addEventListener('mouseleave', () => {
+						status_container.style.color = ''
+					})
+					break
+			}
+
 		}
-		function makeCards (){
+		function makeCards() {
 			characters.forEach(character => {
 				createCard(character)
-			});
+			})
 		}
 		makeCards()
+
+
 	})
-	.catch(err => console.error(err));
+	.catch(err => console.error(err))
 

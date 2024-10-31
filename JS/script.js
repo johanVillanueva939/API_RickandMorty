@@ -3,6 +3,22 @@ fetch('https://rickandmortyapi.com/api/character')
 	.then(data => {
 		const characters = data.results
 		const container = document.querySelector('main')
+		const searchInput = document.getElementById('search')
+
+		searchInput.addEventListener("input", () => search())
+
+		function search() {
+			const main = document.querySelector("main")
+			main.innerHTML = ""
+			const urlName = `https://rickandmortyapi.com/api/character/?name=${searchInput.value}`
+			const urlSpecies = `https://rickandmortyapi.com/api/character/?species=${searchInput.value}`
+			const urlStatus = `https://rickandmortyapi.com/api/character/?status=${searchInput.value}`
+			const urlGender = `https://rickandmortyapi.com/api/character/?gender=${searchInput.value}`
+			searchCharacter(urlName)
+			searchCharacter(urlSpecies)
+			searchCharacter(urlStatus)
+			searchCharacter(urlGender)
+		}
 
 		function createCard(character) {
 
@@ -23,7 +39,7 @@ fetch('https://rickandmortyapi.com/api/character')
 			const name_container = document.createElement('h2')
 			name_container.id = 'name_container'
 			name_container.classList.add('name')
-			name_container.textContent = `Name: ${character.name}`
+			name_container.textContent = character.name
 
 			const status_container = document.createElement('h3')
 			status_container.id = 'status_container'
@@ -33,7 +49,12 @@ fetch('https://rickandmortyapi.com/api/character')
 			const specie_container = document.createElement('h4')
 			specie_container.id = 'specie_container'
 			specie_container.classList.add('specie')
-			specie_container.textContent = character.species
+			specie_container.textContent = `Specie: ${character.species}`
+
+			const specie_gender = document.createElement('h4')
+			specie_gender.id = 'specie_gender'
+			specie_gender.classList.add('gender')
+			specie_gender.textContent = `Gender: ${character.gender}`
 
 			cards.appendChild(imgCard)
 			cards.appendChild(txt_container)
@@ -41,37 +62,87 @@ fetch('https://rickandmortyapi.com/api/character')
 			txt_container.appendChild(name_container)
 			txt_container.appendChild(status_container)
 			txt_container.appendChild(specie_container)
+			txt_container.appendChild(specie_gender)
 
 			container.appendChild(cards)
 
 			switch (character.status) {
 				case 'Alive':
 					status_container.textContent = `🟢Status: ${character.status}`
+					cards.addEventListener('mouseenter', () => {
+						status_container.style.color = '#00ff2a'
+						cards.style.boxShadow = '0px 0px 15px 0px #00ff2a'
+
+					})
+
+					cards.addEventListener('mouseleave', () => {
+						status_container.style.color = ''
+						cards.style.boxShadow = ''
+
+					})
+
+					status_container.addEventListener('click', () => searchCharacterAlive())
+
+					function searchCharacterAlive() {
+						
+							const main = document.querySelector("main")
+							main.innerHTML = ""
+							const url = 'https://rickandmortyapi.com/api/character/?status=Alive'
+							searchCharacter(url)
+					}
+
 					break
 
 				case 'Dead':
 					status_container.textContent = `🔴Status: ${character.status}`
 
-					status_container.addEventListener('mouseenter', () => {
+					cards.addEventListener('mouseenter', () => {
 						status_container.style.color = 'red'
+						cards.style.boxShadow = '0px 0px 15px 0px crimson'
+
 					})
-					
-					status_container.addEventListener('mouseleave', () => {
+
+					cards.addEventListener('mouseleave', () => {
 						status_container.style.color = ''
+						cards.style.boxShadow = ''
+
 					})
+
+					status_container.addEventListener('click', () => searchCharacterDead())
+
+					function searchCharacterDead() {
+						
+							const main = document.querySelector("main")
+							main.innerHTML = ""
+							const url = 'https://rickandmortyapi.com/api/character/?status=Dead'
+							searchCharacter(url)
+					}
+
 					break
 				default:
 					status_container.textContent = `🟡Status: ${character.status}`
 
-					status_container.addEventListener('mouseenter', () => {
+					cards.addEventListener('mouseenter', () => {
 						status_container.style.color = 'yellow'
+						cards.style.boxShadow = '0px 0px 15px 0px yellow'
+					})
+
+					cards.addEventListener('mouseleave', () => {
+						status_container.style.color = ''
+						cards.style.boxShadow = ''
 					})
 					
-					status_container.addEventListener('mouseleave', () => {
-						status_container.style.color = ''
-					})
 					break
 			}
+			status_container.addEventListener('click', () => searchCharacterUnknown())
+
+					function searchCharacterUnknown() {
+						
+							const main = document.querySelector("main")
+							main.innerHTML = ""
+							const url = 'https://rickandmortyapi.com/api/character/?status=Unknown'
+							searchCharacter(url)
+					}
 
 		}
 		function makeCards() {
@@ -80,6 +151,26 @@ fetch('https://rickandmortyapi.com/api/character')
 			})
 		}
 		makeCards()
+
+		const searchCharacter = async (URL) => {
+			const response = await fetch(URL)
+			const data = await response.json()
+			try {
+				printCharacters(data.results)
+			} catch (error) {
+				console.log("character not found")
+			}
+		}
+		try {
+			searchCharacter(url)
+		} catch (error) {
+			console.log("Function searchCharacter is not defined")
+		}
+		function printCharacters(characters) {
+			characters.forEach(character => createCard(character))
+		}
+
+		
 
 
 	})

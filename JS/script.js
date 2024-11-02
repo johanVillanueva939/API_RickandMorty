@@ -5,22 +5,26 @@ fetch('https://rickandmortyapi.com/api/character')
 		const container = document.querySelector('main')
 		const searchInput = document.getElementById('search')
 
-		searchInput.addEventListener("input", () => search())
+		let debounceTimeout
 
-		function search() {
+		searchInput.addEventListener("input", () => {
+			clearTimeout(debounceTimeout) 
+			debounceTimeout = setTimeout(search, 500)
+		}) 
+
+		async function search() {
 			const main = document.querySelector("main")
 			main.innerHTML = ""
 			const urlName = `https://rickandmortyapi.com/api/character/?name=${searchInput.value}`
 			const urlSpecies = `https://rickandmortyapi.com/api/character/?species=${searchInput.value}`
 			const urlStatus = `https://rickandmortyapi.com/api/character/?status=${searchInput.value}`
 			const urlGender = `https://rickandmortyapi.com/api/character/?gender=${searchInput.value}`
-			searchCharacter(urlName)
-			searchCharacter(urlSpecies)
-			searchCharacter(urlStatus)
-			searchCharacter(urlGender)
+			await searchCharacter(urlName)
+			await searchCharacter(urlSpecies)
+			await searchCharacter(urlStatus)
+			await searchCharacter(urlGender)
 		}
-
-		function createCard(character) {
+		async function createCard(character) {
 
 			const cards = document.createElement('div')
 			cards.id = 'container'
@@ -44,7 +48,6 @@ fetch('https://rickandmortyapi.com/api/character')
 			const status_container = document.createElement('h3')
 			status_container.id = 'status_container'
 			status_container.classList.add('status')
-
 
 			const specie_container = document.createElement('h4')
 			specie_container.id = 'specie_container'
@@ -84,11 +87,11 @@ fetch('https://rickandmortyapi.com/api/character')
 					status_container.addEventListener('click', () => searchCharacterAlive())
 
 					function searchCharacterAlive() {
-						
-							const main = document.querySelector("main")
-							main.innerHTML = ""
-							const url = 'https://rickandmortyapi.com/api/character/?status=Alive'
-							searchCharacter(url)
+						const main = document.querySelector("main")
+						main.innerHTML = ""
+						const url = 'https://rickandmortyapi.com/api/character/?status=Alive'
+						searchCharacter(url)
+
 					}
 
 					break
@@ -111,11 +114,11 @@ fetch('https://rickandmortyapi.com/api/character')
 					status_container.addEventListener('click', () => searchCharacterDead())
 
 					function searchCharacterDead() {
-						
-							const main = document.querySelector("main")
-							main.innerHTML = ""
-							const url = 'https://rickandmortyapi.com/api/character/?status=Dead'
-							searchCharacter(url)
+						const main = document.querySelector("main")
+						main.innerHTML = ""
+						const url = 'https://rickandmortyapi.com/api/character/?status=Dead'
+						searchCharacter(url)
+
 					}
 
 					break
@@ -125,52 +128,70 @@ fetch('https://rickandmortyapi.com/api/character')
 					cards.addEventListener('mouseenter', () => {
 						status_container.style.color = 'yellow'
 						cards.style.boxShadow = '0px 0px 15px 0px yellow'
+
 					})
 
 					cards.addEventListener('mouseleave', () => {
 						status_container.style.color = ''
 						cards.style.boxShadow = ''
+
 					})
+					status_container.addEventListener('click', () => searchCharacterUnknown())
+					function searchCharacterUnknown() {
+						const main = document.querySelector("main")
+						main.innerHTML = ""
+						const url = 'https://rickandmortyapi.com/api/character/?status=Unknown'
+						searchCharacter(url)
+
+					}
 					
 					break
 			}
-			status_container.addEventListener('click', () => searchCharacterUnknown())
-
-					function searchCharacterUnknown() {
-						
-							const main = document.querySelector("main")
-							main.innerHTML = ""
-							const url = 'https://rickandmortyapi.com/api/character/?status=Unknown'
-							searchCharacter(url)
-					}
-
 		}
 		function makeCards() {
 			characters.forEach(character => {
 				createCard(character)
 			})
+
 		}
 		makeCards()
 
 		const searchCharacter = async (URL) => {
 			const response = await fetch(URL)
 			const data = await response.json()
+			
 			try {
 				printCharacters(data.results)
+			
 			} catch (error) {
 				console.log("character not found")
+				
 			}
 		}
+		
 		try {
 			searchCharacter(url)
+		
 		} catch (error) {
 			console.log("Function searchCharacter is not defined")
+		
 		}
 		function printCharacters(characters) {
 			characters.forEach(character => createCard(character))
+		
 		}
 
+		const btnReset = document.getElementById('btnReset')
+
+		btnReset.addEventListener('click', () => {
+			const main = document.querySelector("main")
+			main.innerHTML = ""
+			searchInput.value = ""
+			searchCharacter('https://rickandmortyapi.com/api/character')
+			localStorage.clear()
+			sessionStorage.clear()
 		
+		})
 
 
 	})

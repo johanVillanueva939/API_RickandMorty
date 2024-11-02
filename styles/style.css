@@ -20,6 +20,10 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 header{
     display: flex;
@@ -40,6 +44,8 @@ header{
     color: var(--font-color);
     padding: 0 5px;
     font-weight: 500;
+    position: fixed;
+    top: 2px;
 }
 main{
     width: fit-content;
@@ -92,4 +98,40 @@ main{
     color:var(--font-color2);
     text-shadow: none;
     cursor: pointer;
+}
+#btnReset{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 1000px;
+    border: none;
+    background: url('https://cdn-icons-png.flaticon.com/128/7794/7794645.png');
+    background-position: center;
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-color: var(--font-color2);
+    cursor: pointer;
+}
+#btnReset:hover{
+    box-shadow: 0px 0px 15px 0px var(--font-color2);
+}
+@media screen and (max-width: 720px){
+    .card{
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+        padding: 0;
+        padding: 0 0 20px 0;
+        gap: 10px;
+    }
+    .txt{
+        justify-content: center;
+        align-items: center;
+    }
+    .imgCard{
+        border-radius: 8px 8px 0 0;
+        width: 100%;
+    }
 }

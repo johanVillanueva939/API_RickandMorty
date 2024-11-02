@@ -147,6 +147,65 @@ fetch('https://rickandmortyapi.com/api/character')
 					
 					break
 			}
+			switch (character.species) {
+				case 'Human':
+					specie_container.textContent = `👤Specie: ${character.species}`
+					cards.addEventListener('mouseenter', () => {
+						specie_container.style.color = 'blue'
+						
+					})
+					cards.addEventListener('mouseleave', () => {
+						
+						specie_container.style.color = ''
+						
+					})
+
+					specie_container.addEventListener('click', () => searchCharacterHuman())
+					function searchCharacterHuman() {
+						const main = document.querySelector("main")
+						main.innerHTML = ""
+						const url = 'https://rickandmortyapi.com/api/character/?species=Human'
+						searchCharacter(url)
+					}
+					break
+				case 'Alien':
+					specie_container.textContent = `👽Specie: ${character.species}`
+					cards.addEventListener('mouseenter', () => {
+						specie_container.style.color = 'green'
+
+					})
+
+					cards.addEventListener('mouseleave', () => {
+						specie_container.style.color = ''
+					})
+					specie_container.addEventListener('click', () => searchCharacterAlien())
+					function searchCharacterAlien() {
+						const main = document.querySelector("main")
+						main.innerHTML = ""
+						const url = 'https://rickandmortyapi.com/api/character/?species=Alien'
+						searchCharacter(url)
+					}
+					break
+
+				default:
+					specie_container.textContent = `👾Specie: ${character.species}`
+
+					cards.addEventListener('mouseenter', () => {
+						specie_container.style.color = 'purple'
+					})
+					cards.addEventListener('mouseleave', () => {
+						specie_container.style.color = ''
+					})
+					specie_container.addEventListener('click', () => searchCharacterUnknown())
+					function searchCharacterUnknown() {
+						const main = document.querySelector("main")
+						main.innerHTML = ""
+						searchInput.value = "Unknown"
+						const url = 'https://rickandmortyapi.com/api/character/?species=unknown'
+						searchCharacter(url)
+					}
+					break
+			}
 		}
 		function makeCards() {
 			characters.forEach(character => {

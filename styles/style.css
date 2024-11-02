@@ -32,41 +32,41 @@ header{
     height: 7rem;
 }
 .search{
+    background-color: var(--card-color);
+    color: var(--font-color);
     width: 500px;
     height: 40px;
-    outline: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 5px solid var(--font-color);
-    background-color: var(--card-color);
-    border-radius: 5px;
-    color: var(--font-color);
     padding: 0 5px;
     font-weight: 500;
+    border-top: none;
+    border-right: none;
+    border-bottom: 5px solid var(--font-color);
+    border-left: none;
+    border-radius: 5px;
+    outline: none;
     position: fixed;
-    top: 2px;
+    top: 0px;
 }
 main{
     width: fit-content;
     height: fit-content;
+    padding: 50px 5px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 30px;
-    padding: 50px 5px;
 }
 .card{
-    display: flex;
-    align-items: flex-start;
-    gap: 50px;
     background-color: var(--card-color);
+    color: white;
     width: 700px;
     height: fit-content;
     padding: 0 50px 0 0;
-    color: white;
     border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 50px;
 }
 .card:hover{
     box-shadow: 0px 0px 15px 0px var(--font-color);
@@ -82,17 +82,20 @@ main{
     gap: 15px;
 }
 .name{
-    font-size: 2.5rem;
     max-width: 400px;
+    min-width: none;
+    font-size: 2.5rem;
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+}
+.status, .specie, .gender{
+    color: gray;
+    font-size: 1.1rem;
+    max-width: 170px;
     min-width: none;
     display: flex;
     flex-wrap: wrap;
-    text-align: center;
-}
-.status, .specie, .gender{
-    font-size: 1.1rem;
-    color: gray;
-    max-width: 170px;
 }
 .status:hover, .specie:hover, .gender:hover{
     color:var(--font-color2);
@@ -100,38 +103,53 @@ main{
     cursor: pointer;
 }
 #btnReset{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
     width: 50px;
     height: 50px;
-    border-radius: 1000px;
-    border: none;
     background: url('https://cdn-icons-png.flaticon.com/128/7794/7794645.png');
+    border-radius: 1000px;
     background-position: center;
     background-size: 40px 40px;
     background-repeat: no-repeat;
     background-color: var(--font-color2);
+    border: none;
     cursor: pointer;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
 }
 #btnReset:hover{
     box-shadow: 0px 0px 15px 0px var(--font-color2);
 }
 @media screen and (max-width: 720px){
+    .search{
+        width: 450px;
+    }
     .card{
+        width: 300px;
+        padding: 0 0 20px 0;
         flex-direction: column;
         align-items: center;
-        width: 300px;
-        padding: 0;
-        padding: 0 0 20px 0;
         gap: 10px;
     }
+    .name{
+        font-size: 1.8rem;
+    }
+    .status, .specie, .gender{
+        font-size: .9rem;
+    }
     .txt{
-        justify-content: center;
         align-items: center;
+        justify-content: center;
     }
     .imgCard{
-        border-radius: 8px 8px 0 0;
         width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+}
+@media screen and (max-width: 450px){
+    #btnReset{
+        width: 40px;
+        height: 40px;
+        background-size: 30px 30px;
     }
 }
